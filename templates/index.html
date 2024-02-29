@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Sign Detection by Prashant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        #video-container {
+            text-align: center;
+            display: none;
+            margin-bottom: 20px;
+        }
+        #video-container img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        form {
+            text-align: center;
+        }
+        form input[type="file"] {
+            display: none;
+        }
+        .file-upload {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .file-upload:hover {
+            background-color: #218838;
+        }
+        .image-preview {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .image-preview img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .green-button {
+            background-color: #28a745; /* Green color */
+        }
+
+        .green-button:hover {
+            background-color: #218838; /* Darker shade of green on hover */
+        }
+        
+        h6{
+            color: #000000;
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>RSD 27</h1>        
+        <div class="button-container">
+            <button id="start-camera" onclick="startCamera()">Start Camera</button>
+            <button id="stop-camera" onclick="stopCamera()" style="display: none;">Stop Camera</button>
+        </div>
+
+        <div id="video-container">
+            <img id="video-feed" src="{{ url_for('video_feed') }}">
+        </div>
+        
+        <form action="{{ url_for('upload_image') }}" method="post" enctype="multipart/form-data">
+            <label for="image-upload" class="file-upload">Upload Image</label>
+            <input id="image-upload" type="file" name="image" accept="image/*">
+            <input type="submit" value="Predict Image" class="file-upload green-button">
+        </form>
+
+        <div class="image-preview">
+            {% if input_image %}
+                <h2>Input Image</h2>
+                <img src="data:image/jpeg;base64,{{ input_image }}">
+            {% endif %}
+        </div>
+
+        <div class="image-preview">
+            {% if output_image %}
+                <h2>Output Image</h2>
+                <img src="data:image/jpeg;base64,{{ output_image }}">
+            {% endif %}
+        </div>
+        <h6>presented by <strong>Prashant singh</strong></h6>
+
+    </div>
+
+    <script>
+        var videoContainer = document.getElementById('video-container');
+        var videoFeed = document.getElementById('video-feed');
+        var startCameraBtn = document.getElementById('start-camera');
+        var stopCameraBtn = document.getElementById('stop-camera');
+        var imageUploadInput = document.getElementById('image-upload');
+
+        function startCamera() {
+            videoContainer.style.display = 'block';
+            startCameraBtn.style.display = 'none';
+            stopCameraBtn.style.display = 'inline-block';
+        }
+
+        function stopCamera() {
+            videoContainer.style.display = 'none';
+            startCameraBtn.style.display = 'inline-block';
+            stopCameraBtn.style.display = 'none';
+            // Reset input file
+            imageUploadInput.value = '';
+        }
+    </script>
+</body>
+</html>
